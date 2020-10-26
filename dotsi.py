@@ -8,7 +8,7 @@ WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Kindly
 see LICENSE.txt for more details.
 """;
 
-__version__ = "0.0.1-preview";  # Req'd by flit.
+__version__ = "0.0.1";  # Req'd by flit.
 __NOOP__ = lambda: None;        # Blank-ish reference.
 
 def mapObject (func, dicty):

@@ -13,16 +13,16 @@ Let's dive right in:
 ```py
 >>> import dotsi
 >>> 
->>> d = dotsi.Dict({"foo": {"bar": "baz"}})		# Basic
+>>> d = dotsi.Dict({"foo": {"bar": "baz"}})     # Basic
 >>> d.foo.bar
 'baz'
->>> d["users"] = [{"id": 0, "name": "Alice"}]	# List
+>>> d["users"] = [{"id": 0, "name": "Alice"}]   # List
 >>> d.users[0].name
 'Alice'
->>> d.users.append({"id": 1, "name": "Becca"});	# Append
+>>> d.users.append({"id": 1, "name": "Becca"}); # Append
 >>> d.users[1].name
 'Becca'
->>> d.users += [{"id": 2, "name": "Cathy"}];	# `+=`
+>>> d.users += [{"id": 2, "name": "Cathy"}];    # `+=`
 >>> d.users[2].name
 'Cathy'
 >>> d.update({"tasks": [{"id": "a", "text": "Task A"}]});
@@ -31,7 +31,7 @@ Let's dive right in:
 >>> d.tasks[0].tags = ["red", "white", "blue"];
 >>> d.tasks[0].tags[2];
 'blue'
->>> d.tasks[0].pop("tags")						# `.pop()`
+>>> d.tasks[0].pop("tags")                      # `.pop()`
 ['red', 'white', 'blue']
 >>> 
 >>> import pprint
@@ -42,9 +42,9 @@ Let's dive right in:
            {'id': 1, 'name': 'Becca'},
            {'id': 2, 'name': 'Cathy'}]}
 >>> 
->>> type(d.users)		# dotsi.Dict (AKA dotsi.DotsiDict)
+>>> type(d.users)       # dotsi.Dict (AKA dotsi.DotsiDict)
 <class 'dotsi.DotsiList'>
->>> type(d.users[0])	# dotsi.List (AKA dotsi.DotsiList)
+>>> type(d.users[0])    # dotsi.List (AKA dotsi.DotsiList)
 <class 'dotsi.DotsiDict'> 
 >>> 
 ```
@@ -75,8 +75,7 @@ AttributeError: 'dict' object has no attribute 'name'
 ```
 
 **EasyDict:**
-
- too has similar issues.
+[EasyDict](https://github.com/makinacorpus/easydict) is another great library. It works recursively, but doesn't fully support list-nested dict updates.
 
 ```py
 >>> import easydict

@@ -1,0 +1,12 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "dotsi"
+author = "Polydojo, Inc."
+author-email = "8079593+sumukhbarve@users.noreply.github.com"
+home-page = "https://github.com/polydojo/dotsi"
+classifiers = ["License :: OSI Approved :: MIT License"]
+description-file = "README.md"
+
