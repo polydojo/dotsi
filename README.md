@@ -3,7 +3,14 @@ Dotsi
 
 Dot-accessible, update-aware Python dicts (& lists). Works recursively, like a charm.
 
-Dotsi defines two classes `dotsi.Dict` and `dotsi.List`, which *work together* to bring JavaScript-like dot-notation to Python dicts (and lists therein).
+Dotsi defines two classes, `dotsi.Dict` and `dotsi.List`, which *work together* to bring JavaScript-like dot-notation to Python dicts (and lists therein).
+
+Installation
+--------------
+```
+pip install dotsi
+```
+Alternately, download `dotsi.py` it into your project directory.
 
 Usage
 --------
@@ -75,6 +82,7 @@ AttributeError: 'dict' object has no attribute 'name'
 ```
 
 **EasyDict:**
+
 [EasyDict](https://github.com/makinacorpus/easydict) is another great library. It works recursively, but doesn't fully support list-nested dict updates.
 
 ```py
