@@ -43,6 +43,20 @@ assert {"id": 5, "name": "Fiona"} in d.data.users;
 # Operator `in` with dotsi.Dict:
 assert "data" in d and "userId" in d.data.tasks[0];
 
+# Set-Attr within nested dotsi.Dict:
+d.data.posts = [
+    {"id": 0, "author": 0, "title": "Zero"},
+    {"id": 1, "author": 1, "title": "One"},
+];
+assert d.data.posts[0].id == 0 == d.data.posts[0].author;
+assert d.data.posts[1].id == 1 == d.data.posts[1].author;
+
+# Set-item within nested dotsi.List:
+d.data.posts.extend([None, None]);
+d.data.posts[2] = {"id": 2, "author": 2, "title": "Two"};
+d.data.posts[3] = {"id": 3, "author": 3, "title": "Three"}
+assert d.data.posts[2].id == 2 == d.data.posts[2].author;
+assert d.data.posts[3].id == 3 == d.data.posts[3].author;
 
 # Operator `+` with dotsi.List:
 a = dotsi.fy([0, 1, 2]);
@@ -54,14 +68,18 @@ assert a == b;
 c = [-3, -2, -1] + a;
 assert type(c) is list; # Note: `list`, _not_ `dotsi.List`.
 
-# TODO: Write tests::
-# Set-Item within nested dotsi.Dict:
-# Set-item within nested dotsi.List:
+# Operator `|` with dotsi.Dict/dict:
+assert dotsi.fy({"a": "b"}) | {"c": "d"} == {"a": "b", "c": "d"};
+assert type(dotsi.fy({"a": "b"}) | {"c": "d"}) is dotsi.Dict;
+assert {"c": "d"} | dotsi.fy({"a": "b"}) == {"a": "b", "c": "d"};
+assert type({"c": "d"} | dotsi.fy({"a": "b"})) is dict;
 
-li = dotsi.fy([0, 1, 2]);
-li.append({"a": {"b": [0, 1, 2]}});
-assert li[3].a.b == [0, 1, 2];
+# Operator `|=` with dotsi.Dict:
+p = dotsi.fy({"a": "a"});
+p |= {"b": "b"};
+assert type(p) is dotsi.Dict and p == {"a": "a", "b": "b"};
 
-print("All tests passed.");
+# ALL TESTS PASSED!
+print("\nGreat! All tests passed.\n");
 
 # End ######################################################
