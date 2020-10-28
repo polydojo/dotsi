@@ -1,3 +1,4 @@
+
 Dotsi
 =====
 
@@ -114,6 +115,51 @@ Functions:
 
 In most cases, all you need is:
 - `dotsi.fy(thing)`, where `thing` is a `dict` or `list`.
+
+Dict-Like Objects
+----------------------
+While `dotsi.fy()` converts objects of type `dict` to `dotsi.Dict`, it ***doesn't*** touch other dict-like objects, such as those of type `collections.OrderedDict` or `http.cookies.SimpleCookie`.
+
+To convert a non-`dict`, but dict-like object to `dotsi.Dict`, use `dotsi.Dict(.)` directly, or use `dotsi.fy(dict(.))`.
+
+```py
+>>> import dotsi
+>>> from collections import OrderedDict
+>>> 
+>>> d = OrderedDict({"foo": {"bar": "baz"}})
+>>> d
+OrderedDict([('foo', {'bar': 'baz'})])
+>>> type(d)
+<class 'collections.OrderedDict'>
+>>>
+>>> x = dotsi.fy(d)
+>>> x
+OrderedDict([('foo', {'bar': 'baz'})])
+>>> type(x)
+<class 'collections.OrderedDict'>
+>>> 
+>>> y = dotsi.Dict(d)
+>>> y
+{'foo': {'bar': 'baz'}}
+>>> type(y)
+<class 'dotsi.DotsiDict'>
+>>> 
+>>> z = dotsi.fy(dict(d))
+>>> z
+{'foo': {'bar': 'baz'}}
+>>> type(z)
+<class 'dotsi.DotsiDict'>
+```
+
+Subclasses of `dict`, such as `http.cookie.SimpleCookie`, often implement custom behavior, which would be lost on conversion to `dotsi.Dict`. Thus, automatic conversion shouldn't be implemented.
+
+**List-Like Objects**
+
+Like with dicts, `dotsi.fy(.)` only converts objects of type `list` to `dotsi.List`, but doesn't touch other list-like objects or tuples. To convert a non-`list`, but list-like object to `dotsi.List`, directly call `dotsi.List(.)` or use `dotsi.fy(list(.))`
+
+**Identity Function**
+
+For non-`dict` and non-`list` objects, `dotsi.fy(.)` is equivalent to the identity function.
 
 License
 ---------

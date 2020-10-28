@@ -1,3 +1,4 @@
+from collections import OrderedDict;
 import dotsi;
 
 # Basic dotsi.Dict:
@@ -78,6 +79,27 @@ assert type({"c": "d"} | dotsi.fy({"a": "b"})) is dict;
 p = dotsi.fy({"a": "a"});
 p |= {"b": "b"};
 assert type(p) is dotsi.Dict and p == {"a": "a", "b": "b"};
+
+# Maintaining references:
+d1 = dotsi.Dict({"a": "a", "b": "b"});
+d2 = dotsi.Dict({"d1": d1});
+assert d2.d1 is d1;
+d3 = dotsi.Dict(d1=d1);
+assert d3.d1 is d1;
+#
+x = dotsi.Dict(a=1, b=2);
+y = dotsi.Dict(x=x);
+assert y.x is x;
+
+# Non-conversion of dict-like objects:
+d = OrderedDict({"foo": "bar"});
+x = dotsi.fy(d);
+assert type(x) is OrderedDict and x is d;
+y = dotsi.Dict(d);
+assert type(y) is dotsi.Dict and y is not d;
+z = dotsi.fy(dict(d));
+assert type(z) is dotsi.Dict and z is not d and z is not y;
+assert d == x == y == z;
 
 # ALL TESTS PASSED!
 print("\nGreat! All tests passed.\n");

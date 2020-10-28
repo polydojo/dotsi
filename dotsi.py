@@ -38,11 +38,9 @@ def extend (tgt, *srcs):
 
 class DotsiDict (dict):
     "Extends `dict` to support dot-access.";
-    # Primary Method: ::  ::  ::  ::  ::  ::  ::  ::  ::  ::
-    def __setitem__ (self, key, value):
+    def __setitem__ (self, key, value):     # PRIMARY
         super(DotsiDict, self).__setitem__(key, dotsify(value));
 
-    # Other Methods:  ::  ::  ::  ::  ::  ::  ::  ::  ::  ::
     __setattr__ = __setitem__;
     __getattr__ = dict.__getitem__;
     __delattr__ = dict.__delitem__;
@@ -72,15 +70,13 @@ class DotsiDict (dict):
 Dict = DotsiDict;   # Short ALIAS, externally: dotsi.Dict()
 
 class DotsiList (list):
-    "Extends `list`, supports dot-access for inner dicts.";
-    # Primary Methods:    ::  ::  ::  ::  ::  ::  ::  ::  ::
-    def __setitem__ (self, index, value):
+    "Extends `list` to support dot-access for inner dicts.";
+    def __setitem__ (self, index, value):   # PRIMARY
         super(DotsiList, self).__setitem__(index, dotsify(value));
     
-    def insert (self, index, value):
+    def insert (self, index, value):        # PRIMARY
         super(DotsiList, self).insert(index, dotsify(value));
     
-    # Other Methods:  ::  ::  ::  ::  ::  ::  ::  ::  ::  ::
     def append (self, value):
         self.insert(len(self), value);
 
