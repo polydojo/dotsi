@@ -1,4 +1,3 @@
-
 Dotsi
 =====
 
@@ -112,6 +111,8 @@ Classes:
 Functions:
 - `dotsi.dotsify()` calls `dotsi.Dict`/`dotsi.List`, as appropriate.
 - `dotsi.fy()` is a short alias for `dotsi.dotsify()`.
+- `dotsi.mapdotsify()` is like the built-in `map()`, but returns a `dotsi.List`.
+- `dotsi.mapfy` is a short alias for `dotsi.mapdotsify()`. (More on this below.)
 
 In most cases, all you need is:
 - `dotsi.fy(thing)`, where `thing` is a `dict` or `list`.
@@ -153,7 +154,12 @@ OrderedDict([('foo', {'bar': 'baz'})])
 
 Subclasses of `dict`, such as `http.cookie.SimpleCookie`, often implement custom behavior, which would be lost on conversion to `dotsi.Dict`. Thus, automatic conversion shouldn't be implemented.
 
-**List-Like Objects**
+Quick Plug
+--------------
+Dotsi is built and maintained by the folks at [Polydojo, Inc.](https://www.polydojo.com/), led by Sumukh Barve. If your team is looking for a simple project management tool, please check out our latest product: [**BoardBell.com**](https://www.boardbell.com/).
+
+List-Like Objects
+--------------------
 
 Like with dicts, `dotsi.fy(.)` only converts objects of type `list` to `dotsi.List`, but doesn't touch other list-like objects or tuples. To convert a non-`list`, but list-like object to `dotsi.List`, directly call `dotsi.List(.)` or use `dotsi.fy(list(.))`
 
@@ -161,8 +167,27 @@ Like with dicts, `dotsi.fy(.)` only converts objects of type `list` to `dotsi.Li
 
 For non-`dict` and non-`list` objects, `dotsi.fy(.)` is equivalent to the identity function.
 
-License
----------
+Kindly note that from Python3+, the built-in `map()` produces a non-`list` iterable. Thus, calling `dotsi.fy(map(.))` is equivalent to just `map(.)`. Instead, please use `dotsi.List(map(.))`.
+
+
+**Mapping Helper**
+
+As mapping is a pretty-common use case, we've included `dotsi.mapfy(.)`, which is essentially equivalent to `dotsi.List(map(.))`. But additionally, with `dotsi.mapfy(.)`, for mapping onto a *single* sequence, you may pass arguments in either order.
+
+That is, the following lines are equivalent:
+- `x = dotsi.mapfy(lambda n: {"n": n}, [0, 1, 2])`
+- `x = dotsi.mapfy([0, 1, 2], lambda n: {"n": n})`
+In either case, `x[0].n == 0` will be `True`.
+
+When mapping onto multiple sequences, `dotsi.mapfy(.)` expects the same order of arguments as `map(.)`.
+
+
+Licensing
+------------
 Copyright (c) 2020 Polydojo, Inc.
 
-The software is released "AS IS" under the MIT License, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. See [LICENSE.txt](https://github.com/polydojo/dotsi/blob/master/LICENSE.txt) for more details.
+**Software Licensing:**  
+The software is released "AS IS" under the **MIT license**, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Kindly see [LICENSE.txt](https://github.com/polydojo/dotsi/blob/master/LICENSE.txt) for more details.
+
+**No Trademark Rights:**  
+The above software licensing terms **do not** grant any right in the trademarks, service marks, brand names or logos of Polydojo, Inc.

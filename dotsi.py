@@ -3,13 +3,20 @@ Dotsi: Dot-accessible, update-aware Python dicts (& lists).
 
 Copyright (c) 2020 Polydojo, Inc.
 
+SOFTWARE LICENSING
+------------------
 The software is released "AS IS" under the MIT License,
 WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Kindly
 see LICENSE.txt for more details.
+
+NO TRADEMARK RIGHTS
+-------------------
+The above software licensing terms DO NOT grant any right in the
+trademarks, service marks, brand names or logos of Polydojo, Inc.
 """;
 
-__version__ = "0.0.2-preview";  # Req'd by flit.
-__NOOP__ = lambda: None;        # Blank-ish reference.
+__version__ = "0.0.2";      # Req'd by flit.
+__NOOP__ = lambda: None;    # Blank-ish reference.
 
 def mapObject (func, dicty):
     "Helper. Like builtin `map()` for dict-like objects.";
@@ -108,5 +115,12 @@ def defaults(tgt, *srcs):
         for k in src:
             if k not in tgt: tgt[k] = src[k];
     return tgt;
+
+def mapdotsify (fn, seq, *seqs):
+    "Like built-in map(), but returns a dotsi.List.";
+    if not seqs and callable(seq) and not callable(fn):
+        fn, seq = seq, fn;
+    return DotsiList(map(fn, seq, *seqs));
+mapfy = mapdotsify; # Short ALIAS, externally: dotsi.mapfy()
 
 # End ######################################################

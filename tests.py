@@ -101,6 +101,12 @@ z = dotsi.fy(dict(d));
 assert type(z) is dotsi.Dict and z is not d and z is not y;
 assert d == x == y == z;
 
+# Mapping:
+assert dotsi.mapfy(lambda n: {"n": n}, [0,1,2])[0].n == 0;
+assert dotsi.mapfy([0,1,2], lambda n: {"n": n})[0].n == 0; # Reverse order
+assert dotsi.mapfy(lambda x, y: {x: y}, "ab", "AB")[0].a == "A";
+assert dotsi.mapfy([{"x": {"y": "z"}}], lambda x: x)[0].x.y == "z";
+
 # ALL TESTS PASSED!
 print("\nGreat! All tests passed.\n");
 
