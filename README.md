@@ -1,3 +1,4 @@
+
 Dotsi
 =====
 
@@ -23,7 +24,7 @@ Let's dive right in:
 >>> d = dotsi.Dict({"foo": {"bar": "baz"}})     # Basic
 >>> d.foo.bar
 'baz'
->>> d["users"] = [{"id": 0, "name": "Alice"}]   # List
+>>> d.users = [{"id": 0, "name": "Alice"}]   # List
 >>> d.users[0].name
 'Alice'
 >>> d.users.append({"id": 1, "name": "Becca"}); # Append
@@ -63,7 +64,7 @@ In the above example, while we explicitly initialized `d` as an `dotsi.Dict`:
 Dotsi vs Others
 -------------------
 
-**Addict:**
+#### Addict:
 
 At Polydojo, we've been using [Addict](https://github.com/mewwts/addict) for quite some time. It's a great library! But it doesn't play well with list-nested (inner) dicts.
 
@@ -73,7 +74,7 @@ At Polydojo, we've been using [Addict](https://github.com/mewwts/addict) for qui
 >>> d = addict.Dict({"foo": {"bar": "baz"}})
 >>> d.foo
 {'bar': 'baz'}
->>> d["users"] = [{"id": 0, "name": "Alice"}]
+>>> d.users = [{"id": 0, "name": "Alice"}]
 >>> d.users[0].name
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
@@ -81,7 +82,7 @@ AttributeError: 'dict' object has no attribute 'name'
 >>> 
 ```
 
-**EasyDict:**
+#### EasyDict:
 
 [EasyDict](https://github.com/makinacorpus/easydict) is another great library. It works recursively, but doesn't fully support list-nested dict updates.
 
@@ -91,7 +92,7 @@ AttributeError: 'dict' object has no attribute 'name'
 >>> d = easydict.EasyDict({"foo": {"bar": "baz"}})
 >>> d.foo
 {'bar': 'baz'}
->>> d["users"] = [{"id": 0, "name": "Alice"}]
+>>> d.users = [{"id": 0, "name": "Alice"}]
 >>> d.users[0].name
 'Alice'
 >>> d.users.append({"id": 1, "name": "Becca"});
@@ -163,23 +164,41 @@ List-Like Objects
 
 Like with dicts, `dotsi.fy(.)` only converts objects of type `list` to `dotsi.List`, but doesn't touch other list-like objects or tuples. To convert a non-`list`, but list-like object to `dotsi.List`, directly call `dotsi.List(.)` or use `dotsi.fy(list(.))`
 
-**Identity Function**
+#### Identity Function
 
 For non-`dict` and non-`list` objects, `dotsi.fy(.)` is equivalent to the identity function.
 
 Kindly note that from Python3+, the built-in `map()` produces a non-`list` iterable. Thus, calling `dotsi.fy(map(.))` is equivalent to just `map(.)`. Instead, please use `dotsi.List(map(.))`.
 
 
-**Mapping Helper**
+#### Mapping Helper
 
 As mapping is a pretty-common use case, we've included `dotsi.mapfy(.)`, which is essentially equivalent to `dotsi.List(map(.))`. But additionally, with `dotsi.mapfy(.)`, for mapping onto a *single* sequence, you may pass arguments in either order.
 
 That is, the following lines are equivalent:
 - `x = dotsi.mapfy(lambda n: {"n": n}, [0, 1, 2])`
 - `x = dotsi.mapfy([0, 1, 2], lambda n: {"n": n})`
+
 In either case, `x[0].n == 0` will be `True`.
 
-When mapping onto multiple sequences, `dotsi.mapfy(.)` expects the same order of arguments as `map(.)`.
+When mapping onto *multiple* sequences, `dotsi.mapfy(.)` expects the same order of arguments as `map(.)`.
+
+Overridden Methods
+--------------------------
+Excluding magic-methods like `.__init__(.)` etc., methods overridden by Dotsi are listed below.
+
+#### `dotsi.Dict` overrides:
+- `.update(.)`
+- `.setdefault(.)`
+- `.copy(.)`
+
+#### `dotsi.List` overrides:
+- `insert(.)`
+- `append(.)`
+- `extend(.)`
+- `copy(.)`
+
+Signatures for all overridden methods should be equivalent (if not exactly identical) to their non-overridden counterparts.
 
 
 Licensing

@@ -26,6 +26,7 @@ d.data.users += [
     {"id": 4, "name": "Elina"},
     {"id": 5, "name": "Fiona"},
 ];
+assert type(d.data.users[4]) == dotsi.Dict == type(d.data.users[5]);
 assert d.data.users[4].id == 4 and d.data.users[4].name == "Elina";
 assert d.data.users[5].id == 5 and d.data.users[5].name == "Fiona";
 
@@ -106,6 +107,60 @@ assert dotsi.mapfy(lambda n: {"n": n}, [0,1,2])[0].n == 0;
 assert dotsi.mapfy([0,1,2], lambda n: {"n": n})[0].n == 0; # Reverse order
 assert dotsi.mapfy(lambda x, y: {x: y}, "ab", "AB")[0].a == "A";
 assert dotsi.mapfy([{"x": {"y": "z"}}], lambda x: x)[0].x.y == "z";
+
+# DotsiDict's copy method:
+d = dotsi.fy({"data": {"users": [
+    {"id": 0, "name": "Alice"},
+    {"id": 1, "name": "Becci"},
+]}});
+c = d.copy();
+assert c == d and c is not d;
+assert c.data == d.data and c.data is d.data;       # Shallow
+c.data.users[0].foo = "bar";
+assert d.data.users[0].foo == "bar";
+c.data.users[0].pop("foo");
+assert "foo" not in d.data.users[0];
+
+# DotsiList's copy method:
+a = dotsi.fy([
+    {"id": 0, "name": "Alice"},
+    {"id": 1, "name": "Becci"},
+    [],
+]);
+c = a.copy();
+assert a == c and a is not c;
+assert a[0] == c[0] and a[0] is c[0];               # Shallow
+c[0].foo = "bar";
+assert a[0].foo == "bar";
+c[0].pop("foo");
+assert "foo" not in a[0];
+assert a[0] is c[0] and a[1] is c[1];
+assert a[-1] is c[-1];
+c[-1].append({"inner": "foo"});
+assert a[-1][0].inner == "foo";       # As `a[-1] is c[-1]`.
+c.pop(); assert len(c) == 2;
+a.pop(); assert len(a) == 2;
+c.append("topLevelElement");
+assert len(c) == 3 and len(a) == 2;   # As `a is not c`.
+
+# Deep-Copying:
+d = dotsi.fy({"data": {"users": [
+    {"id": 0, "name": "Alice"},
+    {"id": 1, "name": "Becci"},
+]}});
+x = dotsi.deepCopy(d);
+assert x == d and x is not d;
+assert x.data == d.data and x.data is not d.data;   # Deep
+assert x.data.users is not d.data.users;
+assert x.data.users[0] is not d.data.users[0];
+assert type(x) == type(d) == dotsi.Dict;
+assert type(x.data.users) == type(d.data.users) == dotsi.List;
+assert type(x.data.users[0]) == type(d.data.users[0]) == dotsi.Dict;
+x.data.users[0].foo = "bar";
+assert "foo" not in d.data.users[0];
+assert x != d;
+x.data.users[0].pop("foo");
+assert x == d and x is not d;
 
 # ALL TESTS PASSED!
 print("\nGreat! All tests passed.\n");

@@ -15,12 +15,12 @@ The above software licensing terms DO NOT grant any right in the
 trademarks, service marks, brand names or logos of Polydojo, Inc.
 """;
 
-__version__ = "0.0.2";      # Req'd by flit.
+__version__ = "0.0.3";      # Req'd by flit.
 __NOOP__ = lambda: None;    # Blank-ish reference.
 
 def mapObject (func, dicty):
     "Helper. Like builtin `map()` for dict-like objects.";
-    result = type(dicty)(); # Start blank, retain type.
+    result = type(dicty)(); # Start blank   # Retain type(x)
     for k in dicty: result[k] = func(dicty[k]);
     return result;
 
@@ -42,6 +42,23 @@ def extend (tgt, *srcs):
     "Utility. Similar to `_.extend()` from Underscore.js.";
     for src in srcs: tgt.update(src);
     return tgt;
+
+def deepCopy (x):       # Undocumented, unused.
+    "Deep-copy a dict, dotsi.Dict, list, or dotsi.List.";
+    if type(x) in [dict, DotsiDict]:
+        return mapObject(deepCopy, x);      # Retains type(x)
+    if type(x) in [list, DotsiList]:
+        return type(x)(map(deepCopy, x));   # Retain type(x)
+    return x;
+
+def shallowCopy (x):    # Undocumented, used internally.
+    "Shallow-copy a dict, dotsi.Dict, list, or dotsi.List.";
+    identity = lambda y: y;
+    if type(x) in [dict, DotsiDict]:
+        return mapObject(identity, x);      # Retains type(x)
+    if type(x) in [list, DotsiList]:
+        return type(x)(map(identity, x));   # Retain type(x)
+    return x;
 
 class DotsiDict (dict):
     "Extends `dict` to support dot-access.";
@@ -74,10 +91,14 @@ class DotsiDict (dict):
         if key not in self:
             self.__setitem__(key, default); # Auto-dotsify.
         return self[key];   # Note: `self[key]`, not `default`.
+    
+    def copy (self):    # Shallow copy.
+        "Shallow-copy.";
+        return shallowCopy(self);
 Dict = DotsiDict;   # Short ALIAS, externally: dotsi.Dict()
 
 class DotsiList (list):
-    "Extends `list` to support dot-access for inner dicts.";
+    "Extends `list` to support dot-access for nested dicts.";
     def __setitem__ (self, index, value):   # PRIMARY
         super(DotsiList, self).__setitem__(index, dotsify(value));
     
@@ -97,6 +118,10 @@ class DotsiList (list):
     
     def __add__ (self, other):
         return dotsify(list(self) + list(other));
+    
+    def copy (self):    # Shallow copy.
+        "Shallow-copy.";
+        return shallowCopy(self);
 List = DotsiList;   # Short alias, externally: dotsi.List()
 
 def refresh (obj, k=__NOOP__):
