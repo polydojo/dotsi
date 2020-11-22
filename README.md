@@ -1,4 +1,3 @@
-
 Dotsi
 =====
 
@@ -157,7 +156,7 @@ Subclasses of `dict`, such as `http.cookie.SimpleCookie`, often implement custom
 
 Quick Plug
 --------------
-Dotsi is built and maintained by the folks at [Polydojo, Inc.](https://www.polydojo.com/), led by Sumukh Barve. If your team is looking for a simple project management tool, please check out our latest product: [**BoardBell.com**](https://www.boardbell.com/).
+Dotsi is built and maintained by the folks at [Polydojo, Inc.](https://www.polydojo.com/), led by [Sumukh Barve](https://www.sumukhbarve.com/). If your team is looking for a simple project management tool, please check out our latest product: [**BoardBell.com**](https://www.boardbell.com/).
 
 List-Like Objects
 --------------------
@@ -199,6 +198,16 @@ Excluding magic-methods like `.__init__(.)` etc., methods overridden by Dotsi ar
 - `copy(.)`
 
 Signatures for all overridden methods should be equivalent (if not exactly identical) to their non-overridden counterparts.
+
+Underscore-Like Helpers
+------------------------------
+
+The following helper functions are inspired by their counterparts in [Underscore.js](https://underscorejs.org/).
+
+- `dotsi.extend(tgt, *srcs)`
+- `dotsi.defaults(tgt, *srcs)`
+
+Note that these helpers *don't* `dotsi.fy()` the result. While `tgt` is updated (and returned), it's type remains unchanged.
 
 
 Licensing

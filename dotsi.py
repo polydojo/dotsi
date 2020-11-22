@@ -15,7 +15,7 @@ The above software licensing terms DO NOT grant any right in the
 trademarks, service marks, brand names or logos of Polydojo, Inc.
 """;
 
-__version__ = "0.0.3";      # Req'd by flit.
+__version__ = "0.0.4-preview";      # Req'd by flit.
 __NOOP__ = lambda: None;    # Blank-ish reference.
 
 def mapObject (func, dicty):
